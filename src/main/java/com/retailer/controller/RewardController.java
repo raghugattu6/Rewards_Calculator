@@ -33,6 +33,7 @@ RewardsServiceImpl rewardsService;
 	@GetMapping(value = "/{customerId}/rewards", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CustomerRewards> getRewardsByCustomerId(@PathVariable("customerId") Long customerId) {
 
+		//Checking customer is present in customer tables 
 		Customer customer = customerRepository.findByCustomerId(customerId);
 
 		//if customer is not found, gives custom exception
@@ -42,6 +43,7 @@ RewardsServiceImpl rewardsService;
 
 		}
 
+		//if customer found, heading to service class
 		CustomerRewards customerRewards = rewardsService.getRewardsByCustomerId(customerId);
 
 		return new ResponseEntity<>(customerRewards, HttpStatus.OK);

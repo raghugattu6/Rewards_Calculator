@@ -23,12 +23,12 @@ TransactionRepository transactionRepository;
 	public CustomerRewards getRewardsByCustomerId(Long customerId) {
 
 		
-		//caluclating timestamps
+		//calculating time stamps for last three months
 		Timestamp lastMonthTimestamp = Timestamp.valueOf(LocalDateTime.now().minusDays(Constants.daysInMonths));
 		Timestamp lastSecondMonthTimestamp = Timestamp.valueOf(LocalDateTime.now().minusDays(2 * Constants.daysInMonths));
 		Timestamp lastThirdMonthTimestamp = Timestamp.valueOf(LocalDateTime.now().minusDays(3 * Constants.daysInMonths));
         
-		//checking the specific date ranges for last three months
+		//checking the specific date ranges for last three months on the transaction table
 		List<Transaction> lastMonthTransactions = transactionRepository.findAllByCustomerIdAndTransactionDateBetween(
 				customerId,lastMonthTimestamp ,Timestamp.from(Instant.now()) );
 		
@@ -40,6 +40,7 @@ TransactionRepository transactionRepository;
 				.findAllByCustomerIdAndTransactionDateBetween(customerId, lastThirdMonthTimestamp,
 						lastSecondMonthTimestamp);
 
+		//calling the getRewardPoints method to calculate transaction received from transaction table
 		Long lastMonthRewardPoints = getRewardsPerMonth(lastMonthTransactions);
 		Long lastSecondMonthRewardPoints = getRewardsPerMonth(lastSecondMonthTransactions);
 		Long lastThirdMonthRewardPoints = getRewardsPerMonth(lastThirdMonthTransactions);
